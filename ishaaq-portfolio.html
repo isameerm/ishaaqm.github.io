@@ -1,0 +1,1388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ishaaq Sameer Mohammed — Senior AWS Cloud Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ── RESET & TOKENS ─────────────────────────────────────────── */
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#02040a;
+  --surface:#060d18;
+  --card:#080f1f;
+  --cyan:#00f5ff;
+  --sky:#0ea5e9;
+  --skyL:#38bdf8;
+  --green:#00d9a3;
+  --gold:#f59e0b;
+  --violet:#8b5cf6;
+  --red:#ff4d6a;
+  --text:#e4f0ff;
+  --muted:#3a5472;
+  --subtle:#7aa3c8;
+  --border:rgba(0,245,255,0.1);
+}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Outfit',sans-serif;
+  overflow-x:hidden;
+  line-height:1.6;
+}
+::selection{background:rgba(0,245,255,0.2)}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(0,245,255,0.3);border-radius:2px}
+
+/* ── ANIMATIONS ─────────────────────────────────────────────── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes gridScroll{from{transform:rotateX(65deg) translateY(0)}to{transform:rotateX(65deg) translateY(60px)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+@keyframes glow{0%,100%{box-shadow:0 0 8px rgba(0,245,255,0.2)}50%{box-shadow:0 0 24px rgba(0,245,255,0.6)}}
+@keyframes spinBorder{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes countUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes scanline{0%{top:-4px}100%{top:100%}}
+@keyframes borderShimmer{0%,100%{border-color:rgba(0,245,255,0.1)}50%{border-color:rgba(0,245,255,0.35)}}
+@keyframes typing{from{width:0}to{width:100%}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes timelinePulse{0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(0,245,255,0.4)}50%{transform:scale(1.15);box-shadow:0 0 0 8px rgba(0,245,255,0)}}
+
+.reveal{animation:fadeUp 0.7s ease both}
+.reveal-delay-1{animation-delay:0.1s}
+.reveal-delay-2{animation-delay:0.2s}
+.reveal-delay-3{animation-delay:0.3s}
+.reveal-delay-4{animation-delay:0.4s}
+.reveal-delay-5{animation-delay:0.5s}
+
+/* ── GRID BACKGROUND ─────────────────────────────────────────── */
+.grid-bg{
+  position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:
+    linear-gradient(rgba(14,165,233,0.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(14,165,233,0.022) 1px, transparent 1px);
+  background-size:48px 48px;
+}
+.glow-orb{
+  position:fixed;pointer-events:none;z-index:0;border-radius:50%;
+  background:radial-gradient(ellipse at center,rgba(0,245,255,0.05) 0%,transparent 70%);
+  width:80vw;height:60vh;top:-10%;left:10%;
+}
+
+/* ── NAV ─────────────────────────────────────────────────────── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:rgba(2,4,10,0.88);
+  border-bottom:1px solid rgba(0,245,255,0.08);
+  backdrop-filter:blur(20px);
+  padding:0 clamp(16px,4vw,48px);
+  height:56px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.nav-logo{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:20px;letter-spacing:0.12em;
+  color:var(--text);
+}
+.nav-logo span{color:var(--cyan);text-shadow:0 0 20px rgba(0,245,255,0.5)}
+.nav-links{display:flex;gap:28px;list-style:none}
+.nav-links a{
+  font-family:'Space Mono',monospace;font-size:10px;
+  color:var(--muted);letter-spacing:0.12em;
+  text-decoration:none;transition:color 0.2s;
+}
+.nav-links a:hover{color:var(--cyan)}
+.nav-status{
+  display:flex;align-items:center;gap:6px;
+  background:rgba(0,217,163,0.08);
+  border:1px solid rgba(0,217,163,0.2);
+  border-radius:999px;padding:4px 12px;
+}
+.status-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--green);
+  animation:glow 2s ease-in-out infinite;
+}
+.status-text{
+  font-family:'Space Mono',monospace;font-size:9px;
+  color:var(--green);letter-spacing:0.12em;
+}
+.status-option{
+  font-family:'Space Mono',monospace;font-size:9px;
+  letter-spacing:0.1em;padding:10px 16px;
+  color:#7aa3c8;cursor:pointer;transition:background 0.15s;
+}
+.status-option:hover{ background:rgba(0,245,255,0.06); color:#e4f0ff; }
+
+/* ── HERO ────────────────────────────────────────────────────── */
+#hero{
+  min-height:100vh;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+  padding:80px clamp(16px,4vw,48px) 60px;
+  text-align:center;
+}
+.retro-grid{
+  position:absolute;inset:0;overflow:hidden;
+  perspective:200px;pointer-events:none;opacity:0.4;
+}
+.retro-grid-inner{
+  position:absolute;inset:0;
+  transform:rotateX(65deg);transform-origin:50% 0;
+}
+.retro-grid-lines{
+  position:absolute;
+  width:600vw;height:300vh;
+  margin-left:-200%;top:0;
+  background-image:
+    linear-gradient(to right,rgba(0,245,255,0.2) 1px,transparent 0),
+    linear-gradient(to bottom,rgba(0,245,255,0.2) 1px,transparent 0);
+  background-size:60px 60px;
+  animation:gridScroll 3s linear infinite;
+}
+.retro-fade-bottom{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,var(--bg) 15%,transparent 55%);
+}
+.retro-fade-sides{
+  position:absolute;inset:0;
+  background:linear-gradient(to right,var(--bg) 0%,transparent 20%,transparent 80%,var(--bg) 100%);
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(0,245,255,0.06);
+  border:1px solid rgba(0,245,255,0.2);
+  border-radius:999px;padding:6px 16px;
+  margin-bottom:28px;
+  animation:fadeUp 0.8s ease 0.2s both;
+}
+.hero-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green)}
+.hero-badge-text{font-family:'Space Mono',monospace;font-size:9px;color:var(--green);letter-spacing:0.15em}
+.hero-name{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(42px,8vw,88px);
+  letter-spacing:0.01em;
+  line-height:0.9;
+  color:rgba(228,240,255,0.82);
+  font-weight:400;
+  text-shadow:0 0 12px rgba(228,240,255,0.25), 0 0 30px rgba(200,225,255,0.12), 0 0 60px rgba(180,215,255,0.06);
+  animation:fadeUp 1s cubic-bezier(0.16,1,0.3,1) 0.3s both;
+}
+.hero-name-highlight{
+  color:rgba(0,245,255,0.78);
+  text-shadow:0 0 12px rgba(0,245,255,0.35), 0 0 30px rgba(0,245,255,0.15), 0 0 60px rgba(0,245,255,0.07);
+}
+.hero-title{
+  font-family:'Space Mono',monospace;
+  font-size:clamp(9px,1.4vw,12px);
+  color:rgba(0,245,255,0.55);
+  letter-spacing:0.22em;
+  margin-top:12px;margin-bottom:24px;
+  animation:fadeUp 0.8s ease 0.6s both;
+}
+.hero-desc{
+  max-width:580px;margin:0 auto 36px;
+  font-size:clamp(14px,1.6vw,17px);
+  color:rgba(228,240,255,0.55);
+  line-height:1.8;
+  animation:fadeUp 0.8s ease 0.8s both;
+}
+.hero-ctas{
+  display:flex;gap:16px;flex-wrap:wrap;
+  justify-content:center;
+  animation:fadeUp 0.8s ease 1s both;
+}
+.btn-primary{
+  position:relative;display:inline-block;
+  border-radius:999px;padding:1.5px;overflow:hidden;
+}
+.btn-primary-spin{
+  position:absolute;inset:-100%;
+  background:conic-gradient(from 90deg at 50% 50%,rgba(0,245,255,0.1) 0%,#00f5ff 35%,#0ea5e9 50%,#00f5ff 65%,rgba(0,245,255,0.1) 100%);
+  animation:spinBorder 2.5s linear infinite;
+}
+.btn-primary-inner{
+  position:relative;
+  background:rgba(2,4,10,0.95);
+  border-radius:999px;
+  padding:12px 36px;
+  font-family:'Bebas Neue',sans-serif;
+  font-size:16px;letter-spacing:0.2em;
+  color:var(--cyan);
+  text-decoration:none;
+  display:block;
+  transition:all 0.2s;
+  text-shadow:0 0 16px rgba(0,245,255,0.5);
+}
+.btn-primary-inner:hover{background:rgba(0,245,255,0.08);letter-spacing:0.26em}
+.btn-secondary{
+  padding:12px 36px;
+  border:1px solid rgba(0,245,255,0.25);
+  border-radius:999px;
+  font-family:'Bebas Neue',sans-serif;
+  font-size:16px;letter-spacing:0.2em;
+  color:var(--subtle);
+  text-decoration:none;
+  transition:all 0.2s;
+  background:transparent;
+}
+.btn-secondary:hover{
+  border-color:rgba(0,245,255,0.6);
+  color:var(--cyan);
+  box-shadow:0 0 20px rgba(0,245,255,0.1);
+}
+.hero-scroll{
+  position:absolute;bottom:32px;left:50%;transform:translateX(-50%);
+  font-family:'Space Mono',monospace;font-size:9px;
+  color:var(--muted);letter-spacing:0.18em;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  animation:fadeIn 1s ease 1.5s both;
+}
+.hero-scroll-line{
+  width:1px;height:40px;
+  background:linear-gradient(to bottom,rgba(0,245,255,0.5),transparent);
+  animation:pulse 2s ease-in-out infinite;
+}
+
+/* ── SECTION BASE ────────────────────────────────────────────── */
+section{
+  position:relative;z-index:1;
+  padding:100px clamp(16px,5vw,80px);
+  max-width:1160px;margin:0 auto;
+  scroll-margin-top:60px;
+}
+.section-label{
+  font-family:'Space Mono',monospace;
+  font-size:10px;color:var(--cyan);
+  letter-spacing:0.25em;margin-bottom:12px;
+  display:flex;align-items:center;gap:12px;
+}
+.section-label::before{
+  content:'';display:block;
+  width:32px;height:1px;
+  background:linear-gradient(to right,transparent,var(--cyan));
+}
+.section-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(36px,6vw,64px);
+  letter-spacing:0.08em;
+  color:var(--text);
+  line-height:1;
+  margin-bottom:48px;
+}
+.section-title span{color:var(--cyan)}
+
+/* ── NUMBERS ─────────────────────────────────────────────────── */
+#numbers{
+  padding:80px clamp(16px,5vw,80px);
+  max-width:1160px;margin:0 auto;
+  position:relative;z-index:1;
+}
+.numbers-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  gap:1px;
+  background:rgba(0,245,255,0.04);
+  border:1px solid rgba(0,245,255,0.05);
+  border-radius:16px;
+  overflow:hidden;
+}
+.number-cell{
+  background:var(--surface);
+  padding:36px 24px;
+  text-align:center;
+  position:relative;
+  transition:background 0.3s;
+}
+.number-cell:hover{background:rgba(14,165,233,0.06)}
+.number-val{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(38px,5vw,56px);
+  line-height:1;
+  margin-bottom:8px;
+}
+.number-label{
+  font-family:'Space Mono',monospace;
+  font-size:9px;color:var(--muted);
+  letter-spacing:0.15em;
+}
+.number-cell::after{
+  content:'';position:absolute;
+  bottom:0;left:0;right:0;height:2px;
+  transform:scaleX(0);
+  transition:transform 0.3s ease;
+}
+.number-cell:hover::after{transform:scaleX(1)}
+
+/* ── SKILLS ──────────────────────────────────────────────────── */
+.skills-categories{display:flex;flex-direction:column;gap:40px}
+.skill-category-label{
+  font-family:'Space Mono',monospace;
+  font-size:9px;color:var(--muted);
+  letter-spacing:0.2em;margin-bottom:14px;
+}
+.skill-chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{
+  display:flex;align-items:center;gap:7px;
+  padding:8px 16px;border-radius:8px;
+  background:var(--card);
+  border:1px solid rgba(14,165,233,0.12);
+  font-family:'Space Mono',monospace;
+  font-size:10px;color:var(--subtle);
+  letter-spacing:0.06em;
+  transition:all 0.25s;cursor:default;
+}
+.chip:hover{
+  border-color:rgba(0,245,255,0.4);
+  color:var(--cyan);
+  background:rgba(0,245,255,0.05);
+  transform:translateY(-2px);
+  box-shadow:0 4px 16px rgba(0,245,255,0.1);
+}
+.chip-dot{
+  width:5px;height:5px;border-radius:50%;
+  flex-shrink:0;
+}
+
+/* ── TIMELINE ────────────────────────────────────────────────── */
+.timeline{position:relative;padding-left:40px}
+.timeline::before{
+  content:'';
+  position:absolute;left:12px;top:8px;bottom:8px;
+  width:1px;
+  background:linear-gradient(to bottom,transparent,var(--cyan),var(--cyan),transparent);
+  opacity:0.3;
+}
+.timeline-item{
+  position:relative;margin-bottom:52px;
+}
+.timeline-item:last-child{margin-bottom:0}
+.timeline-dot{
+  position:absolute;left:-34px;top:6px;
+  width:14px;height:14px;border-radius:50%;
+  background:var(--bg);
+  border:2px solid var(--cyan);
+  box-shadow:0 0 12px rgba(0,245,255,0.3);
+}
+.timeline-item.current .timeline-dot{
+  background:var(--cyan);
+  animation:timelinePulse 2s ease-in-out infinite;
+}
+.timeline-period{
+  font-family:'Space Mono',monospace;
+  font-size:9px;color:var(--muted);
+  letter-spacing:0.15em;margin-bottom:8px;
+}
+.timeline-role{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(22px,3vw,28px);
+  letter-spacing:0.06em;color:var(--text);
+  line-height:1.1;margin-bottom:4px;
+}
+.timeline-company{
+  font-size:13px;color:var(--subtle);
+  margin-bottom:12px;
+}
+.timeline-company span{color:var(--cyan);opacity:0.8}
+.timeline-desc{
+  font-size:14px;color:rgba(228,240,255,0.45);
+  line-height:1.7;max-width:580px;
+}
+.timeline-badge{
+  display:inline-flex;align-items:center;gap:5px;
+  background:rgba(0,217,163,0.08);
+  border:1px solid rgba(0,217,163,0.2);
+  border-radius:4px;padding:3px 10px;
+  font-family:'Space Mono',monospace;
+  font-size:8px;color:var(--green);
+  letter-spacing:0.1em;margin-top:10px;
+}
+
+/* ── ACHIEVEMENTS ────────────────────────────────────────────── */
+.achieve-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:16px;
+}
+.achieve-card{
+  background:var(--card);
+  border:1px solid rgba(0,245,255,0.08);
+  border-radius:14px;padding:28px;
+  position:relative;overflow:hidden;
+  transition:all 0.3s;
+  animation:borderShimmer 4s ease-in-out infinite;
+}
+.achieve-card:hover{
+  border-color:rgba(0,245,255,0.3);
+  transform:translateY(-4px);
+  box-shadow:0 12px 40px rgba(0,0,0,0.4),0 0 0 1px rgba(0,245,255,0.1);
+}
+.achieve-card::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;height:2px;
+  opacity:0;transition:opacity 0.3s;
+}
+.achieve-card:hover::before{opacity:1}
+.achieve-icon{
+  font-size:24px;margin-bottom:14px;
+  display:block;
+}
+.achieve-metric{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(30px,4vw,40px);
+  line-height:1;margin-bottom:6px;
+}
+.achieve-title{
+  font-size:13px;font-weight:600;
+  color:var(--text);margin-bottom:8px;
+}
+.achieve-desc{
+  font-size:12px;color:var(--subtle);line-height:1.6;
+}
+
+/* ── ABOUT ───────────────────────────────────────────────────── */
+.about-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:64px;align-items:center;
+}
+@media(max-width:768px){.about-grid{grid-template-columns:1fr;gap:40px}}
+.about-text p{
+  font-size:clamp(14px,1.6vw,17px);
+  color:rgba(228,240,255,0.55);
+  line-height:1.9;margin-bottom:20px;
+}
+.about-text p strong{color:var(--cyan);font-weight:600}
+.about-card{
+  background:var(--card);
+  border:1px solid rgba(0,245,255,0.1);
+  border-radius:16px;padding:32px;
+}
+.about-card-title{
+  font-family:'Space Mono',monospace;
+  font-size:9px;color:var(--muted);
+  letter-spacing:0.2em;margin-bottom:20px;
+}
+.quick-fact{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:12px 0;
+  border-bottom:1px solid rgba(0,245,255,0.06);
+}
+.quick-fact:last-child{border-bottom:none}
+.quick-fact-label{
+  font-family:'Space Mono',monospace;
+  font-size:9px;color:var(--muted);letter-spacing:0.1em;
+}
+.quick-fact-value{
+  font-size:13px;color:var(--text);font-weight:500;text-align:right;
+}
+.quick-fact-value.highlight{color:var(--cyan)}
+
+/* ── CONTACT ─────────────────────────────────────────────────── */
+#contact{
+  text-align:center;
+  padding:100px clamp(16px,5vw,80px) 140px;
+  max-width:1160px;margin:0 auto;
+  position:relative;z-index:1;
+}
+.contact-tagline{
+  font-size:clamp(14px,1.6vw,18px);
+  color:rgba(228,240,255,0.45);
+  max-width:500px;margin:0 auto 48px;
+  line-height:1.8;
+}
+.contact-links{
+  display:flex;gap:16px;flex-wrap:wrap;justify-content:center;
+  margin-bottom:64px;
+}
+.contact-link{
+  display:flex;align-items:center;gap:10px;
+  padding:14px 28px;
+  border:1px solid rgba(0,245,255,0.15);
+  border-radius:12px;
+  text-decoration:none;
+  color:var(--subtle);
+  font-family:'Space Mono',monospace;
+  font-size:11px;letter-spacing:0.1em;
+  transition:all 0.25s;
+  background:var(--card);
+}
+.contact-link:hover{
+  border-color:rgba(0,245,255,0.4);
+  color:var(--cyan);
+  transform:translateY(-2px);
+  box-shadow:0 8px 24px rgba(0,0,0,0.3);
+}
+.contact-availability{
+  display:inline-flex;align-items:center;gap:10px;
+  background:rgba(0,217,163,0.06);
+  border:1px solid rgba(0,217,163,0.15);
+  border-radius:12px;padding:16px 32px;
+}
+.avail-label{
+  font-family:'Space Mono',monospace;
+  font-size:10px;color:var(--muted);letter-spacing:0.1em;
+}
+.avail-value{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:18px;color:var(--green);
+  letter-spacing:0.1em;
+}
+
+/* ── FOOTER ──────────────────────────────────────────────────── */
+footer{
+  position:relative;z-index:1;
+  border-top:1px solid rgba(0,245,255,0.06);
+  padding:28px clamp(16px,5vw,80px);
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:12px;
+}
+.footer-name{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:16px;letter-spacing:0.12em;
+  color:var(--muted);
+}
+.footer-note{
+  font-family:'Space Mono',monospace;
+  font-size:9px;color:var(--muted);
+  letter-spacing:0.1em;
+}
+
+/* ── RESPONSIVE ──────────────────────────────────────────────── */
+@media(max-width:768px){
+  .nav-links{display:none}
+  .timeline{padding-left:28px}
+  .numbers-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:480px){
+  .numbers-grid{grid-template-columns:repeat(2,1fr)}
+  .hero-ctas{flex-direction:column;align-items:center}
+}
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+<div class="glow-orb"></div>
+
+<!-- ── NAV ─────────────────────────────────────────────────── -->
+<!-- ── SPLASH SCREEN ─────────────────────────────────────────── -->
+<div id="splash" style="position:fixed;inset:0;z-index:99998;background:#02040a;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;transition:opacity 0.48s ease, transform 0.48s ease;">
+
+  <!-- Animated grid background -->
+  <div style="position:absolute;inset:0;overflow:hidden;opacity:0.18;">
+    <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(0,245,255,0.15) 1px,transparent 1px),linear-gradient(90deg,rgba(0,245,255,0.15) 1px,transparent 1px);background-size:48px 48px;transform:perspective(600px) rotateX(65deg) translateY(-60px);animation:gridScroll 3s linear infinite;"></div>
+  </div>
+
+  <!-- Radial glow -->
+  <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:600px;background:radial-gradient(ellipse,rgba(0,245,255,0.06) 0%,transparent 70%);pointer-events:none;"></div>
+
+  <!-- Corner brackets -->
+  <div style="position:absolute;top:24px;left:24px;width:40px;height:40px;border-top:2px solid rgba(0,245,255,0.4);border-left:2px solid rgba(0,245,255,0.4);"></div>
+  <div style="position:absolute;top:24px;right:24px;width:40px;height:40px;border-top:2px solid rgba(0,245,255,0.4);border-right:2px solid rgba(0,245,255,0.4);"></div>
+  <div style="position:absolute;bottom:24px;left:24px;width:40px;height:40px;border-bottom:2px solid rgba(0,245,255,0.4);border-left:2px solid rgba(0,245,255,0.4);"></div>
+  <div style="position:absolute;bottom:24px;right:24px;width:40px;height:40px;border-bottom:2px solid rgba(0,245,255,0.4);border-right:2px solid rgba(0,245,255,0.4);"></div>
+
+  <!-- CRT scanline -->
+  <div style="position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.08) 2px,rgba(0,0,0,0.08) 4px);"></div>
+
+  <!-- Content -->
+  <div style="position:relative;z-index:1;text-align:center;padding:0 24px;max-width:700px;">
+
+    <!-- Label -->
+    <div style="font-family:'Space Mono',monospace;font-size:10px;color:#00f5ff;letter-spacing:0.3em;margin-bottom:16px;opacity:0.7;">AWS CLOUD PRODUCTION SUPPORT ENGINEER</div>
+
+    <!-- Name -->
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:clamp(52px,12vw,110px);line-height:0.88;letter-spacing:0.04em;color:rgba(228,240,255,0.9);text-shadow:0 0 40px rgba(228,240,255,0.12);margin-bottom:4px;">ISHAAQ</div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:clamp(52px,12vw,110px);line-height:0.88;letter-spacing:0.04em;color:rgba(0,245,255,0.82);text-shadow:0 0 40px rgba(0,245,255,0.25);margin-bottom:28px;">SAMEER</div>
+
+    <!-- Stats row -->
+    <div style="display:flex;gap:28px;justify-content:center;flex-wrap:wrap;margin-bottom:32px;">
+      <div style="text-align:center;">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:26px;color:#00f5ff;letter-spacing:0.06em;">13+</div>
+        <div style="font-family:'Space Mono',monospace;font-size:7px;color:#3a5472;letter-spacing:0.15em;">YRS EXP</div>
+      </div>
+      <div style="width:1px;background:rgba(0,245,255,0.12);"></div>
+      <div style="text-align:center;">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:26px;color:#00d9a3;letter-spacing:0.06em;">7+</div>
+        <div style="font-family:'Space Mono',monospace;font-size:7px;color:#3a5472;letter-spacing:0.15em;">YRS AWS</div>
+      </div>
+      <div style="width:1px;background:rgba(0,245,255,0.12);"></div>
+      <div style="text-align:center;">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:26px;color:#f59e0b;letter-spacing:0.06em;">2000+</div>
+        <div style="font-family:'Space Mono',monospace;font-size:7px;color:#3a5472;letter-spacing:0.15em;">INCIDENTS</div>
+      </div>
+      <div style="width:1px;background:rgba(0,245,255,0.12);"></div>
+      <div style="text-align:center;">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:26px;color:#a78bfa;letter-spacing:0.06em;">99.9%</div>
+        <div style="font-family:'Space Mono',monospace;font-size:7px;color:#3a5472;letter-spacing:0.15em;">SLA</div>
+      </div>
+      <div style="width:1px;background:rgba(0,245,255,0.12);"></div>
+      <div style="text-align:center;">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:26px;color:#00f5ff;letter-spacing:0.06em;">$65+</div>
+        <div style="font-family:'Space Mono',monospace;font-size:7px;color:#3a5472;letter-spacing:0.15em;">C2C / HR</div>
+      </div>
+    </div>
+
+    <!-- Launch button -->
+    <div onclick="launchApp()" style="display:inline-block;position:relative;cursor:pointer;padding:2px;border-radius:999px;">
+      <div style="position:absolute;inset:0;border-radius:999px;padding:2px;background:conic-gradient(from 0deg,#00f5ff,#a78bfa,#00d9a3,#00f5ff);animation:spinBorder 2.5s linear infinite;-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;"></div>
+      <div style="position:relative;background:#02040a;border-radius:999px;padding:14px 44px;font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:0.25em;color:#00f5ff;">LAUNCH PORTFOLIO</div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function launchApp() {
+  var s = document.getElementById('splash');
+  s.style.opacity = '0';
+  s.style.transform = 'scale(1.04)';
+  setTimeout(function(){ s.style.display = 'none'; }, 480);
+}
+</script>
+
+<nav>
+  <div class="nav-logo">ISM<span>.</span></div>
+  <ul class="nav-links">
+    <li><a href="#numbers">METRICS</a></li>
+    <li><a href="#skills">SKILLS</a></li>
+    <li><a href="#journey">JOURNEY</a></li>
+    <li><a href="#achievements">IMPACT</a></li>
+    <li><a href="#about">ABOUT</a></li>
+    <li><a href="#contact">HIRE ME</a></li>
+  </ul>
+  <div style="position:relative;" id="statusWrapper">
+    <div class="nav-status" id="navStatus" onclick="toggleStatusMenu()" style="cursor:pointer;user-select:none;" title="Click to change status">
+      <div class="status-dot" id="statusDot"></div>
+      <span class="status-text" id="statusText"></span>
+      <span style="font-size:8px;color:inherit;opacity:0.5;margin-left:2px;">▾</span>
+    </div>
+    <div id="statusMenu" style="
+      display:none;position:absolute;top:calc(100% + 8px);right:0;
+      background:#080f1f;border:1px solid rgba(0,245,255,0.15);
+      border-radius:10px;overflow:hidden;min-width:160px;
+      box-shadow:0 8px 32px rgba(0,0,0,0.6);z-index:9999;
+    ">
+      <div class="status-option" data-status="AVAILABLE NOW"   data-color="#00d9a3" data-bg="rgba(0,217,163,0.08)"  data-border="rgba(0,217,163,0.2)">🟢 AVAILABLE NOW</div>
+      <div class="status-option" data-status="OPEN TO OFFERS"  data-color="#f59e0b" data-bg="rgba(245,158,11,0.08)" data-border="rgba(245,158,11,0.2)">🟡 OPEN TO OFFERS</div>
+      <div class="status-option" data-status="NOT AVAILABLE"   data-color="#ff4d6a" data-bg="rgba(255,77,106,0.08)" data-border="rgba(255,77,106,0.2)">🔴 NOT AVAILABLE</div>
+    </div>
+  </div>
+</nav>
+
+<!-- ── HERO ─────────────────────────────────────────────────── -->
+<div id="hero">
+  <div class="retro-grid">
+    <div class="retro-grid-inner">
+      <div class="retro-grid-lines"></div>
+    </div>
+    <div class="retro-fade-bottom"></div>
+    <div class="retro-fade-sides"></div>
+  </div>
+
+  <div class="hero-badge">
+    <div class="hero-badge-dot"></div>
+    <span class="hero-badge-text">OPEN TO C2C · $65+/HR · ANY US LOCATION</span>
+  </div>
+
+  <h1 class="hero-name">
+    ISHAAQ<br>
+    <span class="hero-name-highlight">SAMEER</span><br>
+    MOHAMMED
+  </h1>
+
+  <div class="hero-title">SENIOR AWS CLOUD PRODUCTION SUPPORT ENGINEER · CAPITAL ONE</div>
+
+  <p class="hero-desc">
+    13+ years turning complex cloud infrastructure into bulletproof systems.
+    Specialist in AWS production environments, incident command, and zero-downtime operations at scale.
+  </p>
+
+  <div class="hero-ctas">
+    <div class="btn-primary" style="cursor:pointer" onclick="openContactModal()">
+      <div class="btn-primary-spin"></div>
+      <div class="btn-primary-inner">GET IN TOUCH</div>
+    </div>
+    <a href="https://linkedin.com/in/ishaaqm" target="_blank" class="btn-secondary">VIEW LINKEDIN</a>
+  </div>
+
+  <div class="hero-scroll">
+    <div class="hero-scroll-line"></div>
+    <span>SCROLL</span>
+  </div>
+</div>
+
+<!-- ── BY THE NUMBERS ────────────────────────────────────────── -->
+<div id="numbers" style="position:relative;z-index:1;padding:0 clamp(16px,5vw,80px) 80px;max-width:1160px;margin:0 auto;scroll-margin-top:60px;">
+  <div class="numbers-grid reveal">
+    <div class="number-cell" style="--accent-color:var(--sky)">
+      <div class="number-val" style="color:var(--sky);text-shadow:0 0 30px rgba(14,165,233,0.5)" >13+</div>
+      <div class="number-label">YEARS EXPERIENCE</div>
+      <div class="number-cell-after" style="background:var(--sky)"></div>
+      <style>.number-cell:nth-child(1)::after{background:linear-gradient(90deg,transparent,var(--sky),transparent)}</style>
+    </div>
+    <div class="number-cell">
+      <div class="number-val" style="color:var(--cyan);text-shadow:0 0 30px rgba(0,245,255,0.5)" >7+</div>
+      <div class="number-label">YEARS AWS @ CAPITAL ONE</div>
+      <style>.number-cell:nth-child(2)::after{background:linear-gradient(90deg,transparent,var(--cyan),transparent)}</style>
+    </div>
+    <div class="number-cell">
+      <div class="number-val" style="color:var(--green);text-shadow:0 0 30px rgba(0,217,163,0.5)">99.9%</div>
+      <div class="number-label">SLA MAINTAINED</div>
+      <style>.number-cell:nth-child(3)::after{background:linear-gradient(90deg,transparent,var(--green),transparent)}</style>
+    </div>
+    <div class="number-cell">
+      <div class="number-val" style="color:var(--gold);text-shadow:0 0 30px rgba(245,158,11,0.5)" >2000+</div>
+      <div class="number-label">PRODUCTION INCIDENTS RESOLVED</div>
+      <style>.number-cell:nth-child(4)::after{background:linear-gradient(90deg,transparent,var(--gold),transparent)}</style>
+    </div>
+    <div class="number-cell">
+      <div class="number-val" style="color:var(--violet);text-shadow:0 0 30px rgba(139,92,246,0.5)" >30%</div>
+      <div class="number-label">% MTTR REDUCTION</div>
+      <style>.number-cell:nth-child(5)::after{background:linear-gradient(90deg,transparent,var(--violet),transparent)}</style>
+    </div>
+    <div class="number-cell">
+      <div class="number-val" style="color:var(--red);text-shadow:0 0 30px rgba(255,77,106,0.5)">50+</div>
+      <div class="number-label">MICROSERVICES SUPPORTED</div>
+      <style>.number-cell:nth-child(6)::after{background:linear-gradient(90deg,transparent,var(--red),transparent)}</style>
+    </div>
+    <div class="number-cell">
+      <div class="number-val" style="color:var(--cyan);text-shadow:0 0 30px rgba(0,245,255,0.5)">150+</div>
+      <div class="number-label">FAILOVER & FAILBACK OPS</div>
+      <style>.number-cell:nth-child(7)::after{background:linear-gradient(90deg,transparent,var(--cyan),transparent)}</style>
+    </div>
+  </div>
+</div>
+
+<!-- ── SKILLS ────────────────────────────────────────────────── -->
+<section id="skills">
+  <div class="section-label reveal">TECHNICAL ARSENAL</div>
+  <h2 class="section-title reveal reveal-delay-1">SKILLS &amp; <span>STACK</span></h2>
+
+  <div class="skills-categories reveal reveal-delay-2">
+
+    <div>
+      <div class="skill-category-label">☁️ CLOUD & INFRASTRUCTURE</div>
+      <div class="skill-chips">
+        <div class="chip"><span class="chip-dot" style="background:var(--cyan)"></span>AWS EC2</div>
+        <div class="chip"><span class="chip-dot" style="background:var(--cyan)"></span>VPC</div>
+        <div class="chip"><span class="chip-dot" style="background:var(--cyan)"></span>IAM</div>
+        <div class="chip"><span class="chip-dot" style="background:var(--cyan)"></span>S3</div>
+        <div class="chip"><span class="chip-dot" style="background:var(--cyan)"></span>RDS / Aurora</div>
+        <div class="chip"><span class="chip-dot" style="background:var(--cyan)"></span>DynamoDB</div>
+        <div class="chip"><span class="chip-dot" style="background:var(--cyan)"></span>Lambda</div>
+        <div class="chip"><span class="chip-dot" style="background:var(--cyan)"></span>EKS</div>
+        <div class="chip"><span class="chip-dot" style="background:var(--cyan)"></span>CloudFormation</div>
+        <div class="chip"><span class="chip-dot" style="background:var(--cyan)"></span>Route 53</div>
+        <div class="chip"><span class="chip-dot" style="background:var(--cyan)"></span>ELB / ALB</div>
+        <div class="chip"><span class="chip-dot" style="background:var(--cyan)"></span>EMR</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="skill-category-label">📊 OBSERVABILITY & MONITORING</div>
+      <div class="skill-chips">
+        <div class="chip"><span class="chip-dot" style="background:var(--green)"></span>Datadog</div>
+        <div class="chip"><span class="chip-dot" style="background:var(--green)"></span>Splunk</div>
+        <div class="chip"><span class="chip-dot" style="background:var(--green)"></span>CloudWatch</div>
+        <div class="chip"><span class="chip-dot" style="background:var(--green)"></span>New Relic</div>
+        <div class="chip"><span class="chip-dot" style="background:var(--green)"></span>PagerDuty</div>
+        <div class="chip"><span class="chip-dot" style="background:var(--green)"></span>Opsgenie</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="skill-category-label">⚙️ INFRA AS CODE & CI/CD</div>
+      <div class="skill-chips">
+        <div class="chip"><span class="chip-dot" style="background:var(--violet)"></span>Terraform</div>
+        <div class="chip"><span class="chip-dot" style="background:var(--violet)"></span>Kubernetes</div>
+        <div class="chip"><span class="chip-dot" style="background:var(--violet)"></span>Jenkins</div>
+        <div class="chip"><span class="chip-dot" style="background:var(--violet)"></span>GitHub Actions</div>
+        <div class="chip"><span class="chip-dot" style="background:var(--violet)"></span>Docker</div>
+        <div class="chip"><span class="chip-dot" style="background:var(--violet)"></span>Helm</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="skill-category-label">📦 DATA & PLATFORMS</div>
+      <div class="skill-chips">
+        <div class="chip"><span class="chip-dot" style="background:var(--gold)"></span>Databricks</div>
+        <div class="chip"><span class="chip-dot" style="background:var(--gold)"></span>Snowflake</div>
+        <div class="chip"><span class="chip-dot" style="background:var(--gold)"></span>Python</div>
+        <div class="chip"><span class="chip-dot" style="background:var(--gold)"></span>Bash</div>
+        <div class="chip"><span class="chip-dot" style="background:var(--gold)"></span>ServiceNow</div>
+        <div class="chip"><span class="chip-dot" style="background:var(--gold)"></span>Salesforce</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── CAREER TIMELINE ───────────────────────────────────────── -->
+<section id="journey">
+  <div class="section-label reveal">PROFESSIONAL JOURNEY</div>
+  <h2 class="section-title reveal reveal-delay-1">CAREER <span>TIMELINE</span></h2>
+
+  <div class="timeline">
+
+    <!-- ── Capital One: Senior ── -->
+    <div class="timeline-item current reveal reveal-delay-1">
+      <div class="timeline-dot"></div>
+      <div class="timeline-period">FEB 2024 — PRESENT</div>
+      <div class="timeline-role">SENIOR AWS CLOUD<br>PRODUCTION SUPPORT ENGINEER</div>
+      <div class="timeline-company">Capital One Bank · <span>Richmond, VA</span></div>
+      <div class="timeline-desc">
+        Promoted after consistently leading incident response, DR activities, and Big Data platform support beyond role scope across 50+ microservices in 3 AWS accounts. Owned L3/L4 incident response for 2,000+ incidents, maintaining 99.9%+ SLA. Served as DR POC for 5+ production applications — executing quarterly AZ failover drills with 15-min RTO. Drove RCA &amp; PIR programs, reducing P1 recurrence by ~35%. Authored 20+ runbooks adopted as on-call standards; automated recovery workflows reducing MTTR by ~30%.
+      </div>
+      <div class="timeline-badge">⬆ PROMOTED FROM INFRASTRUCTURE ENGINEER</div>
+    </div>
+
+    <!-- ── Capital One: Infrastructure ── -->
+    <div class="timeline-item reveal reveal-delay-2">
+      <div class="timeline-dot"></div>
+      <div class="timeline-period">OCT 2020 — JAN 2024 · 3+ YRS</div>
+      <div class="timeline-role">AWS CLOUD INFRASTRUCTURE ENGINEER</div>
+      <div class="timeline-company">Capital One Bank · <span>Richmond, VA</span></div>
+      <div class="timeline-desc">
+        Supported high-availability AWS environments across EC2, S3, EFS, RDS, and VPC for 10+ business-critical applications. Assisted Kubernetes/EKS workload troubleshooting, DR failover validation, and post-failover health checks. Monitored services using Splunk &amp; New Relic. Built Lambda-based automation for proactive alerting and scheduled recovery jobs.
+      </div>
+    </div>
+
+    <!-- ── Capital One: Platform Support ── -->
+    <div class="timeline-item reveal reveal-delay-3">
+      <div class="timeline-dot"></div>
+      <div class="timeline-period">SEPT 2019 — SEPT 2020 · 1 YR</div>
+      <div class="timeline-role">AWS PLATFORM SUPPORT ENGINEER</div>
+      <div class="timeline-company">Capital One Bank · <span>Richmond, VA</span></div>
+      <div class="timeline-desc">
+        Joined Capital One providing L2/L3 production support for EC2, EMR, S3, and IAM environments — triaging incidents impacting Big Data pipelines and analytics workloads. Authored SOPs and operational runbooks to standardize incident response.
+      </div>
+    </div>
+
+    <!-- ── Magtech ── -->
+    <div class="timeline-item reveal reveal-delay-4">
+      <div class="timeline-dot"></div>
+      <div class="timeline-period">MAY 2019 — JUN 2019</div>
+      <div class="timeline-role">SOFTWARE ENGINEER — AWS</div>
+      <div class="timeline-company">Magtech Solutions · <span>Jersey City, NJ</span></div>
+      <div class="timeline-desc">
+        Deployed AWS services including IAM, EC2, S3, Lambda, RDS, VPC, and SNS using CloudFormation and Terraform. Automated deployment and configuration tasks using Ansible.
+      </div>
+    </div>
+
+    <!-- ── Salesforce roles ── -->
+    <div class="timeline-item reveal reveal-delay-4">
+      <div class="timeline-dot"></div>
+      <div class="timeline-period">MAY 2017 — MAY 2019 · 2 YRS</div>
+      <div class="timeline-role">SOFTWARE ANALYST — SALESFORCE</div>
+      <div class="timeline-company">Veridic Solutions &amp; ITDEA Technologies · <span>NJ / FL</span></div>
+      <div class="timeline-desc">
+        Developed and customized Salesforce Lightning and Visualforce components, Apex triggers, and automated business workflows. Executed bulk data migrations of 10,000+ records and built reports and dashboards for operational visibility.
+      </div>
+    </div>
+
+    <!-- ── Business Analyst ── -->
+    <div class="timeline-item reveal reveal-delay-5">
+      <div class="timeline-dot"></div>
+      <div class="timeline-period">AUG 2016 — APR 2017</div>
+      <div class="timeline-role">BUSINESS ANALYST</div>
+      <div class="timeline-company">ASTA CRS · <span>Greenbelt, MD</span></div>
+      <div class="timeline-desc">
+        Documented system workflows and requirements using UML and BPMN. Supported UAT and regression testing cycles, validating system behavior during release readiness activities.
+      </div>
+    </div>
+
+    <!-- ── Education: MS ── -->
+    <div class="timeline-item reveal" style="animation-delay:0.5s">
+      <div class="timeline-dot"></div>
+      <div class="timeline-period">2014 — MAY 2016</div>
+      <div class="timeline-role">MS · MANAGEMENT INFORMATION SYSTEMS</div>
+      <div class="timeline-company">University of Illinois at Springfield · <span>Illinois, USA</span></div>
+      <div class="timeline-desc">
+        Graduate studies in MIS — enterprise systems, data management, and IT strategy. The academic bridge that connected early engineering roots to a cloud infrastructure career in the US.
+      </div>
+      <div class="timeline-badge">🎓 GRADUATED MAY 2016</div>
+    </div>
+
+    <!-- ── Wipro ── -->
+    <div class="timeline-item reveal" style="animation-delay:0.6s">
+      <div class="timeline-dot"></div>
+      <div class="timeline-period">JUN 2012 — JAN 2015 · 2.5 YRS</div>
+      <div class="timeline-role">PROJECT ENGINEER</div>
+      <div class="timeline-company">Wipro Technologies · <span>Hyderabad, India</span></div>
+      <div class="timeline-desc">
+        Manual and automated testing for enterprise applications — Siebel CRM and JDE ERP. Prepared technical documentation, tracked defects, and supported production release readiness. The foundation of a 13+ year engineering career.
+      </div>
+    </div>
+
+    <!-- ── Education: BE ── -->
+    <div class="timeline-item reveal" style="animation-delay:0.7s">
+      <div class="timeline-dot"></div>
+      <div class="timeline-period">2008 — APR 2012</div>
+      <div class="timeline-role">BE · ELECTRICAL &amp; ELECTRONICS ENGINEERING</div>
+      <div class="timeline-company">GITAM University · <span>Hyderabad, India</span></div>
+      <div class="timeline-desc">
+        Bachelor of Engineering in EEE — the technical roots that built a systems-first mindset across a 13+ year career spanning QA, development, and cloud infrastructure.
+      </div>
+      <div class="timeline-badge">🎓 GRADUATED APRIL 2012</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── ACHIEVEMENTS ──────────────────────────────────────────── -->
+<section id="achievements">
+  <div class="section-label reveal">IMPACT BY THE NUMBERS</div>
+  <h2 class="section-title reveal reveal-delay-1">KEY <span>ACHIEVEMENTS</span></h2>
+
+  <div class="achieve-grid">
+
+    <div class="achieve-card reveal reveal-delay-1">
+      <span class="achieve-icon">⚡</span>
+      <div class="achieve-metric" style="color:var(--cyan)">~30%</div>
+      <div class="achieve-title">MTTR Reduction</div>
+      <div class="achieve-desc">Slashed mean time to resolution by ~30% through structured runbooks and automated triage workflows across 50+ microservices.</div>
+      <style>.achieve-card:nth-child(1)::before{background:linear-gradient(90deg,var(--cyan),transparent)}</style>
+    </div>
+
+    <div class="achieve-card reveal reveal-delay-2">
+      <span class="achieve-icon">🛡️</span>
+      <div class="achieve-metric" style="color:var(--green)">99.9%+</div>
+      <div class="achieve-title">SLA Sustained</div>
+      <div class="achieve-desc">Maintained 99.9%+ SLA across all production services in a high-stakes financial services environment — zero compromise on uptime.</div>
+      <style>.achieve-card:nth-child(2)::before{background:linear-gradient(90deg,var(--green),transparent)}</style>
+    </div>
+
+    <div class="achieve-card reveal reveal-delay-3">
+      <span class="achieve-icon">📋</span>
+      <div class="achieve-metric" style="color:var(--violet)">20+</div>
+      <div class="achieve-title">Runbooks Authored</div>
+      <div class="achieve-desc">Created 20+ operational runbooks that cut new engineer onboarding time by ~40% and reduced incident recurrence by 35%.</div>
+      <style>.achieve-card:nth-child(3)::before{background:linear-gradient(90deg,var(--violet),transparent)}</style>
+    </div>
+
+    <div class="achieve-card reveal reveal-delay-4">
+      <span class="achieve-icon">🚨</span>
+      <div class="achieve-metric" style="color:var(--gold)">2000+</div>
+      <div class="achieve-title">Production Incidents Resolved</div>
+      <div class="achieve-desc">Resolved 2,000+ production incidents since joining Capital One — each with structured triage, root-cause analysis, and documented follow-through.</div>
+      <style>.achieve-card:nth-child(4)::before{background:linear-gradient(90deg,var(--gold),transparent)}</style>
+    </div>
+
+    <div class="achieve-card reveal reveal-delay-5">
+      <span class="achieve-icon">⏱️</span>
+      <div class="achieve-metric" style="color:var(--sky)">8 hrs/wk</div>
+      <div class="achieve-title">Manual Triage Eliminated</div>
+      <div class="achieve-desc">Automated recurring alert investigations, reclaiming 8+ engineer-hours per week across the team for higher-value incident response.</div>
+      <style>.achieve-card:nth-child(5)::before{background:linear-gradient(90deg,var(--sky),transparent)}</style>
+    </div>
+
+    <div class="achieve-card reveal" style="transition-delay:0.6s">
+      <span class="achieve-icon">👥</span>
+      <div class="achieve-metric" style="color:var(--red)">10+</div>
+      <div class="achieve-title">Outage Teams Led</div>
+      <div class="achieve-desc">Commanded 10+ cross-functional incident response teams during major outages — coordinating engineering, comms, and executive escalation.</div>
+      <style>.achieve-card:nth-child(6)::before{background:linear-gradient(90deg,var(--red),transparent)}</style>
+    </div>
+
+    <div class="achieve-card reveal" style="transition-delay:0.7s">
+      <span class="achieve-icon">🔁</span>
+      <div class="achieve-metric" style="color:var(--cyan)">150+</div>
+      <div class="achieve-title">Failover & Failback Ops</div>
+      <div class="achieve-desc">Executed 150+ AZ and region-level traffic failover and failback activities across Capital One's production environment — quarterly since 2019.</div>
+      <style>.achieve-card:nth-child(7)::before{background:linear-gradient(90deg,var(--cyan),transparent)}</style>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── ABOUT ─────────────────────────────────────────────────── -->
+<section id="about">
+  <div class="section-label reveal">THE PERSON BEHIND THE STACK</div>
+  <h2 class="section-title reveal reveal-delay-1">ABOUT <span>ME</span></h2>
+
+  <div class="about-grid">
+    <div class="about-text reveal reveal-delay-2">
+      <p>
+        I started my career at <strong>Wipro Technologies in Hyderabad</strong>, spending 2.5 years as a Project Engineer doing manual and automated testing for Siebel CRM and JDE ERP systems. That discipline — validating systems before they fail — shapes how I approach production infrastructure to this day.
+      </p>
+      <p>
+        I then moved to the US to pursue an <strong>MS in Management Information Systems</strong> at the University of Illinois Springfield, graduating in May 2016. From there I worked as a Business Analyst at ASTA CRS in Maryland, then as a Salesforce Developer across ITDEA Technologies and Veridic Solutions — building cross-functional and platform development experience before finding my home in cloud infrastructure.
+      </p>
+      <p>
+        In 2019 I joined <strong>Capital One</strong> — first as a Platform Support Engineer, then promoted to Infrastructure Engineer, and then to <strong>Senior Cloud Production Support Engineer</strong> in February 2024. Across 7+ years I've resolved 2,000+ production incidents, served as DR POC for 5+ applications, led Big Data and Kubernetes platform support, and built the runbooks and automation that made the entire team faster and more resilient.
+      </p>
+      <p>
+        I don't just keep systems running. I build the <strong>processes, runbooks, and muscle memory</strong> that make entire teams more resilient. Now I'm ready to bring this AWS expertise to a new organization.
+      </p>
+    </div>
+    <div class="reveal reveal-delay-3">
+      <div class="about-card">
+        <div class="about-card-title">QUICK PROFILE</div>
+        <div class="quick-fact">
+          <span class="quick-fact-label">LOCATION</span>
+          <span class="quick-fact-value">Richmond, VA</span>
+        </div>
+        <div class="quick-fact">
+          <span class="quick-fact-label">EDUCATION</span>
+          <span class="quick-fact-value">MS MIS · Univ. of Illinois</span>
+        </div>
+        <div class="quick-fact">
+          <span class="quick-fact-label">AVAILABILITY</span>
+          <span class="quick-fact-value highlight">Immediate</span>
+        </div>
+        <div class="quick-fact">
+          <span class="quick-fact-label">WORK TYPE</span>
+          <span class="quick-fact-value highlight">C2C · $65+/hr</span>
+        </div>
+        <div class="quick-fact">
+          <span class="quick-fact-label">LOCATION PREF</span>
+          <span class="quick-fact-value">Remote / Hybrid / Onsite</span>
+        </div>
+        <div class="quick-fact">
+          <span class="quick-fact-label">VISA</span>
+          <span class="quick-fact-value">H-1B · Authorized to Work</span>
+        </div>
+        </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACT ───────────────────────────────────────────────── -->
+<div id="contact" style="scroll-margin-top:60px">
+  <div class="section-label reveal" style="justify-content:center">READY WHEN YOU ARE</div>
+  <h2 class="section-title reveal reveal-delay-1" style="margin-bottom:16px">LET'S <span>CONNECT</span></h2>
+  <p class="contact-tagline reveal reveal-delay-2">
+    Looking for a battle-tested AWS engineer who can own production on day one?
+    Let's talk about what I can bring to your team.
+  </p>
+
+  <div class="reveal reveal-delay-3" style="display:flex;justify-content:center;margin-bottom:48px">
+    <div class="btn-primary" style="cursor:pointer" onclick="openContactModal()">
+      <div class="btn-primary-spin"></div>
+      <div class="btn-primary-inner">GET IN TOUCH</div>
+    </div>
+  </div>
+
+  <div class="contact-availability reveal reveal-delay-4">
+    <div>
+      <div class="avail-label">AVAILABILITY</div>
+      <div class="avail-value">IMMEDIATE</div>
+    </div>
+    <div style="width:1px;height:40px;background:rgba(0,245,255,0.1)"></div>
+    <div>
+      <div class="avail-label">PREFERRED RATE</div>
+      <div class="avail-value" style="color:var(--cyan)">$65+ / HR C2C</div>
+    </div>
+    <div style="width:1px;height:40px;background:rgba(0,245,255,0.1)"></div>
+    <div>
+      <div class="avail-label">LOCATION</div>
+      <div class="avail-value" style="color:var(--sky)">ANY US CITY</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── FOOTER ────────────────────────────────────────────────── -->
+<footer>
+  <div class="footer-name">ISHAAQ SAMEER MOHAMMED</div>
+  <div class="footer-note">SENIOR AWS CLOUD PRODUCTION SUPPORT ENGINEER · RICHMOND VA</div>
+</footer>
+
+
+<!-- ── CONTACT MODAL ─────────────────────────────────────────── -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+  // ── EmailJS config — fill these in after setting up at emailjs.com ──
+  var EMAILJS_PUBLIC_KEY  = "biAEBdojW5pSGmPct";
+  var EMAILJS_SERVICE_ID  = "service_qwuxu3e";
+  var EMAILJS_TEMPLATE_ID = "template_p6dqrdh";
+  (function(){ if(typeof emailjs!=='undefined') emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY }); })();
+</script>
+
+<div id="contactModal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(2,4,10,0.92);backdrop-filter:blur(16px);">
+  <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#080f1f;border:1px solid rgba(0,245,255,0.22);border-radius:20px;padding:40px 34px 32px;max-width:420px;width:92%;box-shadow:0 0 60px rgba(0,245,255,0.07),0 24px 60px rgba(0,0,0,0.8);">
+
+    <!-- Close -->
+    <button id="modalClose" style="position:absolute;top:14px;right:14px;background:rgba(0,245,255,0.06);border:1px solid rgba(0,245,255,0.15);border-radius:50%;width:30px;height:30px;color:#7aa3c8;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;">✕</button>
+
+    <!-- Header -->
+    <div style="font-family:'Space Mono',monospace;font-size:8px;color:#00f5ff;letter-spacing:0.22em;margin-bottom:10px;display:flex;align-items:center;gap:8px;">
+      <div style="width:16px;height:1px;background:#00f5ff;"></div>CONTACT
+    </div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:34px;letter-spacing:0.08em;color:#e4f0ff;line-height:1;margin-bottom:22px;">
+      GET IN <span style="color:#00f5ff;">TOUCH</span>
+    </div>
+
+    <!-- Email -->
+    <div style="background:rgba(0,245,255,0.04);border:1px solid rgba(0,245,255,0.15);border-radius:10px;padding:15px 18px;margin-bottom:10px;">
+      <div style="font-family:'Space Mono',monospace;font-size:8px;color:#3a5472;letter-spacing:0.15em;margin-bottom:6px;">📧 EMAIL</div>
+      <div id="modalEmailDisplay" style="font-family:'Space Mono',monospace;font-size:13px;color:#00f5ff;font-weight:700;word-break:break-all;"></div>
+<script>document.getElementById('modalEmailDisplay').textContent = ['isameerm227','gmail.com'].join('@');</script>
+    </div>
+
+    <!-- Phone -->
+    <div style="background:rgba(0,217,163,0.04);border:1px solid rgba(0,217,163,0.13);border-radius:10px;padding:15px 18px;margin-bottom:20px;">
+      <div style="font-family:'Space Mono',monospace;font-size:8px;color:#3a5472;letter-spacing:0.15em;margin-bottom:6px;">📞 PHONE</div>
+      <div style="font-family:'Space Mono',monospace;font-size:13px;color:#00d9a3;font-weight:700;">+1 217-899-4201</div>
+    </div>
+
+    <!-- Divider -->
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+      <div style="flex:1;height:1px;background:rgba(0,245,255,0.08);"></div>
+      <div style="font-family:'Space Mono',monospace;font-size:8px;color:#3a5472;letter-spacing:0.15em;">OR RECEIVE MY RESUME</div>
+      <div style="flex:1;height:1px;background:rgba(0,245,255,0.08);"></div>
+    </div>
+
+    <!-- Resume sender -->
+    <div style="background:rgba(139,92,246,0.05);border:1px solid rgba(139,92,246,0.2);border-radius:10px;padding:16px 18px;">
+      <div style="font-family:'Space Mono',monospace;font-size:8px;color:#3a5472;letter-spacing:0.15em;margin-bottom:10px;">📄 SEND RESUME TO MY INBOX</div>
+      <div style="display:flex;gap:8px;">
+        <input id="resumeEmail" type="email" placeholder="your@email.com" style="flex:1;background:rgba(0,0,0,0.35);border:1px solid rgba(139,92,246,0.25);border-radius:8px;padding:10px 13px;font-family:'Space Mono',monospace;font-size:11px;color:#e4f0ff;outline:none;transition:border-color 0.2s;" onfocus="this.style.borderColor='rgba(139,92,246,0.6)'" onblur="this.style.borderColor='rgba(139,92,246,0.25)'" />
+        <button id="sendResumeBtn" style="background:rgba(139,92,246,0.15);border:1px solid rgba(139,92,246,0.35);border-radius:8px;padding:10px 16px;font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:0.1em;color:#a78bfa;cursor:pointer;white-space:nowrap;transition:all 0.2s;" onmouseover="this.style.background='rgba(139,92,246,0.28)'" onmouseout="this.style.background='rgba(139,92,246,0.15)'">SEND</button>
+      </div>
+      <div id="resumeStatus" style="font-family:'Space Mono',monospace;font-size:9px;margin-top:8px;min-height:14px;letter-spacing:0.08em;color:#3a5472;"></div>
+    </div>
+
+    <!-- Availability strip -->
+    <div style="border-top:1px solid rgba(0,245,255,0.07);padding-top:16px;margin-top:20px;display:flex;gap:18px;flex-wrap:wrap;">
+      <div>
+        <div style="font-family:'Space Mono',monospace;font-size:7px;color:#3a5472;letter-spacing:0.12em;margin-bottom:2px;">AVAILABILITY</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:14px;color:#00d9a3;letter-spacing:0.1em;">IMMEDIATE</div>
+      </div>
+      <div>
+        <div style="font-family:'Space Mono',monospace;font-size:7px;color:#3a5472;letter-spacing:0.12em;margin-bottom:2px;">RATE</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:14px;color:#00f5ff;letter-spacing:0.1em;">$65+ / HR C2C</div>
+      </div>
+      <div>
+        <div style="font-family:'Space Mono',monospace;font-size:7px;color:#3a5472;letter-spacing:0.12em;margin-bottom:2px;">LOCATION</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:14px;color:#0ea5e9;letter-spacing:0.1em;">ANY US CITY</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+
+  // ── AVAILABILITY STATUS DROPDOWN ─────────────────────────
+  var badge  = document.getElementById('navStatus');
+  var dot    = document.getElementById('statusDot');
+  var txtEl  = document.getElementById('statusText');
+  var menu   = document.getElementById('statusMenu');
+
+  function applyStatus(status, color, bg, border) {
+    txtEl.textContent      = status;
+    dot.style.background   = color;
+    txtEl.style.color      = color;
+    badge.style.background = bg;
+    badge.style.borderColor= border;
+    // Persist choice
+    try { localStorage.setItem('ism_status', JSON.stringify({status,color,bg,border})); } catch(e){}
+  }
+
+  // Close menu when clicking outside
+  document.addEventListener('click', function(e) {
+    if (!document.getElementById('statusWrapper').contains(e.target)) {
+      menu.style.display = 'none';
+    }
+  });
+
+  // Wire up options
+  document.querySelectorAll('.status-option').forEach(function(opt) {
+    opt.addEventListener('click', function() {
+      applyStatus(
+        this.dataset.status,
+        this.dataset.color,
+        this.dataset.bg,
+        this.dataset.border
+      );
+      menu.style.display = 'none';
+    });
+  });
+
+  // Load saved status or default to AVAILABLE NOW
+  try {
+    var saved = JSON.parse(localStorage.getItem('ism_status'));
+    if (saved) { applyStatus(saved.status, saved.color, saved.bg, saved.border); }
+    else { applyStatus('AVAILABLE NOW','#00d9a3','rgba(0,217,163,0.08)','rgba(0,217,163,0.2)'); }
+  } catch(e) {
+    applyStatus('AVAILABLE NOW','#00d9a3','rgba(0,217,163,0.08)','rgba(0,217,163,0.2)');
+  }
+
+
+  // ── MODAL ──────────────────────────────────────────────────
+  var modal = document.getElementById('contactModal');
+  var closeBtn = document.getElementById('modalClose');
+
+  function openModal() {
+    modal.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    modal.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+
+  // Expose globally for onclick= attributes
+  window.openContactModal = openModal;
+
+  // ── SEND RESUME VIA EMAILJS ───────────────────────────────
+  document.getElementById('sendResumeBtn').addEventListener('click', function() {
+    var email = document.getElementById('resumeEmail').value.trim();
+    var status = document.getElementById('resumeStatus');
+    var btn = document.getElementById('sendResumeBtn');
+
+    if (!email || !email.includes('@')) {
+      status.style.color = '#ff4d6a';
+      status.textContent = '⚠ Please enter a valid email address.';
+      return;
+    }
+    if (EMAILJS_PUBLIC_KEY === 'YOUR_PUBLIC_KEY') {
+      status.style.color = '#f59e0b';
+      status.textContent = '⚠ EmailJS not configured yet — see setup guide below.';
+      return;
+    }
+    btn.textContent = 'SENDING...';
+    btn.disabled = true;
+    status.textContent = '';
+
+    emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+      to_email: email,
+      from_name: 'Ishaaq Sameer Mohammed'
+    }).then(function() {
+      status.style.color = '#00d9a3';
+      status.textContent = '✓ Resume sent! Check your inbox.';
+      btn.textContent = 'SENT ✓';
+      document.getElementById('resumeEmail').value = '';
+      setTimeout(function() {
+        btn.textContent = 'SEND';
+        btn.disabled = false;
+        status.textContent = '';
+      }, 4000);
+    }, function() {
+      status.style.color = '#ff4d6a';
+      status.textContent = '✗ Failed. Please email me directly.';
+      btn.textContent = 'SEND';
+      btn.disabled = false;
+    });
+  });
+
+  if (closeBtn) closeBtn.addEventListener('click', closeModal);
+
+  modal.addEventListener('click', function(e) {
+    if (e.target === modal) closeModal();
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeModal();
+  });
+
+  // ── ACTIVE NAV ON SCROLL ───────────────────────────────────
+  var navLinks = document.querySelectorAll('.nav-links a');
+  var sectionIds = ['numbers','skills','journey','achievements','about','contact'];
+
+  function setActiveNav(id) {
+    navLinks.forEach(function(a) {
+      var href = a.getAttribute('href').replace('#','');
+      a.style.color = href === id ? 'var(--cyan)' : '';
+      a.style.textShadow = href === id ? '0 0 12px rgba(0,245,255,0.6)' : '';
+    });
+  }
+
+  window.addEventListener('scroll', function() {
+    var current = 'numbers';
+    sectionIds.forEach(function(id) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      if (window.scrollY >= el.offsetTop - 120) current = id;
+    });
+    setActiveNav(current);
+  }, { passive: true });
+
+  navLinks.forEach(function(a) {
+    a.addEventListener('click', function(e) {
+      e.preventDefault();
+      var id = this.getAttribute('href').replace('#','');
+      var el = document.getElementById(id);
+      if (el) window.scrollTo({ top: el.offsetTop - 60, behavior: 'smooth' });
+      setActiveNav(id);
+    });
+  });
+
+});
+</script>
+
+<!-- ── PASSWORD MODAL ───────────────────────────────────────── -->
+<div id="pwdModal" style="display:none;position:fixed;inset:0;z-index:99999;background:rgba(2,4,10,0.92);backdrop-filter:blur(16px);">
+  <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#080f1f;border:1px solid rgba(0,245,255,0.2);border-radius:16px;padding:36px 32px;max-width:340px;width:90%;box-shadow:0 0 60px rgba(0,245,255,0.07),0 24px 60px rgba(0,0,0,0.8);">
+    <div style="font-family:'Space Mono',monospace;font-size:8px;color:#00f5ff;letter-spacing:0.22em;margin-bottom:10px;display:flex;align-items:center;gap:8px;">
+      <div style="width:16px;height:1px;background:#00f5ff;"></div>RESTRICTED
+    </div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:0.08em;color:#e4f0ff;line-height:1;margin-bottom:6px;">
+      ADMIN <span style="color:#00f5ff;">ACCESS</span>
+    </div>
+    <div style="font-family:'Space Mono',monospace;font-size:9px;color:#3a5472;letter-spacing:0.08em;margin-bottom:24px;">Enter password to change status</div>
+    <input id="pwdInput" type="password" placeholder="••••••••••" style="width:100%;box-sizing:border-box;background:rgba(0,0,0,0.4);border:1px solid rgba(0,245,255,0.2);border-radius:8px;padding:12px 16px;font-family:'Space Mono',monospace;font-size:13px;color:#e4f0ff;outline:none;transition:border-color 0.2s;margin-bottom:8px;"
+      onfocus="this.style.borderColor='rgba(0,245,255,0.5)'"
+      onblur="this.style.borderColor='rgba(0,245,255,0.2)'"
+      onkeydown="if(event.key==='Enter')submitPwd();if(event.key==='Escape')closePwdModal();" />
+    <div id="pwdError" style="font-family:'Space Mono',monospace;font-size:9px;color:#ff4d6a;letter-spacing:0.08em;min-height:14px;margin-bottom:16px;"></div>
+    <div style="display:flex;gap:10px;">
+      <button onclick="closePwdModal()" style="flex:1;background:transparent;border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:11px;font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:0.1em;color:#3a5472;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.borderColor='rgba(255,255,255,0.2)';this.style.color='#7aa3c8'" onmouseout="this.style.borderColor='rgba(255,255,255,0.08)';this.style.color='#3a5472'">CANCEL</button>
+      <button onclick="submitPwd()" style="flex:1;background:rgba(0,245,255,0.08);border:1px solid rgba(0,245,255,0.25);border-radius:8px;padding:11px;font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:0.1em;color:#00f5ff;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.background='rgba(0,245,255,0.16)'" onmouseout="this.style.background='rgba(0,245,255,0.08)'">UNLOCK</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  var statusUnlocked = false;
+
+  window.toggleStatusMenu = function() {
+    if (!statusUnlocked) {
+      document.getElementById('pwdModal').style.display = 'block';
+      setTimeout(function(){ document.getElementById('pwdInput').focus(); }, 50);
+      return;
+    }
+    var menu = document.getElementById('statusMenu');
+    menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+  };
+
+  window.closePwdModal = function() {
+    document.getElementById('pwdModal').style.display = 'none';
+    document.getElementById('pwdInput').value = '';
+    document.getElementById('pwdError').textContent = '';
+  };
+
+  window.submitPwd = function() {
+    var val = document.getElementById('pwdInput').value;
+    var menu = document.getElementById('statusMenu');
+    if (val === 'Majnu@1430') {
+      statusUnlocked = true;
+      closePwdModal();
+      menu.style.display = 'block';
+    } else {
+      var err = document.getElementById('pwdError');
+      err.textContent = '✗ Incorrect password.';
+      document.getElementById('pwdInput').value = '';
+      document.getElementById('pwdInput').focus();
+      setTimeout(function(){ err.textContent = ''; }, 3000);
+    }
+  };
+
+  document.getElementById('pwdModal').addEventListener('click', function(e){
+    if (e.target === this) closePwdModal();
+  });
+</script>
+
+</body>
+</html
+</body>
+</html>
